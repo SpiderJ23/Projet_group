@@ -4,6 +4,9 @@ var app = express();
 
 var mongoose = require('mongoose');
 
+// var Login = require('.models/login');
+// var User = require('.models/user');
+
 var   bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended : false }));
 
@@ -20,11 +23,6 @@ mongoose.connect(dbURL, {
     useUnifiedTopology: true,
 }).then(console.log("MongoDB connected !"))
 .catch(err => console.log("Error : "+ err));
-
-
-
-
-
 
 
 // Routes
@@ -51,6 +49,8 @@ app.get('/Sign', function (req, res) {
 
 
 
+
+// Lancement du Serveur
 var server = app.listen(5000, function () {
     console.log("Le Serveur est en route 5000");
 });
