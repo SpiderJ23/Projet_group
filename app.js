@@ -5,17 +5,15 @@ var app = express();
 var mongoose = require('mongoose');
 
 // var Login = require('.models/login');
-// var User = require('.models/user');
+var User = require('./models/User');
 
 var   bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended : false }));
 
+app.set('view engine', 'ejs');
+
 
 require ("dotenv").config()
-
-
-const User = require('./models/User');
-
 
 var dbURL = process.env.DATABASE_URL
 
@@ -40,6 +38,10 @@ app.get('/Avis', function (req, res) {
     res.render('Avis');
 });
 
+app.get('/Login', function (req, res) {
+    res.render('UserPage');
+});
+
 // app.get('/Avis', function (req, res) {
 //     res.render('Avis');
 // });
@@ -47,7 +49,6 @@ app.get('/Avis', function (req, res) {
 
 
 // inscription
-
 app.post("/api/signup", function(req, res){
     const Data = new User ({
         user: req.body.user,
@@ -60,21 +61,15 @@ app.post("/api/signup", function(req, res){
     }).catch(err => console.log(err));
 })
 
+
 app.get('/Sign', function (req, res) {
     res.render('Inscription');
 });
 
 
 
-<<<<<<< HEAD
-// Lancement du Serveur
-var server = app.listen(5000, function () {
-    console.log("Le Serveur est en route 5000");
-});
-=======
 
 // connexion
-
 app.post("/api/signin", function(req, res){
     User.findOne({ 
      email : req.body.email
@@ -91,13 +86,9 @@ app.post("/api/signin", function(req, res){
      }).catch(err=>{console.log(err)})
     });
 
-    app.get('/Login', function (req, res) {
-        res.render('UserPage');
-    });
 
 
 
     var server = app.listen(5000, function () {
         console.log("Le Serveur est en route 5000");
     });
->>>>>>> 17208c85c082abf595fd4e85217ef40045c33e94
