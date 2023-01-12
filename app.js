@@ -10,10 +10,13 @@ var User = require('./models/User');
 var   bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended : false }));
 
-app.set('view engine', 'ejs');
-
-
+app.set('view engine', 'ejs'); 
 require ("dotenv").config()
+
+const bcrypt = require('bcrypt');
+const User = require('./models/User');
+const Admin = require('./models/Admin');
+
 
 var dbURL = process.env.DATABASE_URL
 
@@ -38,9 +41,15 @@ app.get('/Avis', function (req, res) {
     res.render('Avis');
 });
 
-app.get('/Login', function (req, res) {
-    res.render('UserPage');
-});
+// Routes pour afficher les données récupérer
+app.get('/Admin/:id', function (req, res) {
+    Admin.findOne({
+        _id: req.params.id
+    }).then(data => {
+        res.render('Home', {data: data});
+    }).catch(err => {console.log(err);});
+})
+
 
 // app.get('/Avis', function (req, res) {
 //     res.render('Avis');
@@ -57,12 +66,11 @@ app.post("/api/signup", function(req, res){
         admin: false 
     })
     Data.save().then(() => {
-        res.redirect("/Login");
+        res.redirect("/login");
     }).catch(err => console.log(err));
 })
 
-
-app.get('/Sign', function (req, res) {
+app.get('/signup', function (req, res) {
     res.render('Inscription');
 });
 
@@ -81,14 +89,39 @@ app.post("/api/signin", function(req, res){
      if (!bcrypt.compareSync(req.body.password,user.password)){
          res.status(404).send("Password Invalid !");
      }
-         res.render("Home",{data:user});
+     if (user.admin ==true ){
+        res.render('Admin');
+     }
+     else{  
+     res.render("Home",{data:user});
+     }
        
      }).catch(err=>{console.log(err)})
     });
 
+    app.get('/login', function (req, res) {
+        res.render('UserPage');
+    });
 
+    // envoie questionnaire base de donnée
 
+    app.post ('/api/admin',function (req, res){
+       console.log(req.body);
+        const question = new Admin ({
+            titre: req.body.titre,
+            question: req.body.question,
+            note: req.body.note
+        })
+    question.save().then(()=>
+    res.redirect('/Home')
+    ).catch(err=> console.log (err));  
+
+    });
+
+    // 
 
     var server = app.listen(5000, function () {
         console.log("Le Serveur est en route 5000");
     });
+
+

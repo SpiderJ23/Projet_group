@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 
-const adminSchema = mongoose.Schema({
-    question1 : { type:"String", required: true},
+const AdminSchema = mongoose.Schema({
+    titre: { type:"String", required: true},
+    question: { type:"String", required: true},
+    note: { type:"Number", },
+    
 })
 
 
-module.exports = mongoose.model ("Admin",userSchema);
+module.exports = mongoose.model ("Admin",AdminSchema);
