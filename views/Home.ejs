@@ -10,7 +10,7 @@
     <h1>Home</h1>
     <%#= data %>
     <% data.forEach( post =>{ %>
-        <%= post %>
+        
         <form action="/api/reponse/<%= post.id %>?_method=PUT" method="post">
             <input type="hidden" name="_method" value="PUT">
 
@@ -24,7 +24,7 @@
                 <label for="2">2</label>
               
             
-                <input type="radio" id="3" name="note" value="3">
+                <input type="radio" id="3" name="note" value="3" checked>
                 <label for="3">3</label>
               
             
@@ -38,9 +38,21 @@
               
                 <input type="submit" value="envoyer">
         </form>
+        
         <br><br>
+        
         <% })   %>
+        <button id="tog1"><a href="http://localhost:5000/Avis" target="_blank">AVIS</a></button>
+        
+       <script>
+          
+        if(!post.admin) {
 
-       
+            document.getElementById("tog1");
+            tog1.style.display = "none";
+            
+        }
+        </script>
+        
 </body>
 </html> 

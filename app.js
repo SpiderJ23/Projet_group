@@ -18,7 +18,7 @@ app.set('view engine', 'ejs');
 require ("dotenv").config()
 
 const bcrypt = require('bcrypt');
-const User = require('./models/User');
+// const User = require('./models/User');
 const Admin = require('./models/Admin');
 
 
@@ -85,7 +85,7 @@ app.post("/api/signin", function(req, res){
          res.status(404).send("Password Invalid !");
      }
      if (user.admin ==true ){
-        res.render('Admin');
+        res.render('Admin', {data:user});
      }
      else{  
         res.redirect("/home");
@@ -106,7 +106,8 @@ app.post("/api/signin", function(req, res){
         const question = new Admin ({
             titre: req.body.titre,
             question: req.body.question,
-            note: req.body.note
+            note: req.body.note,
+            user: req.body.user
         })
     question.save().then(()=>
         res.render('Admin')
@@ -116,9 +117,7 @@ app.post("/api/signin", function(req, res){
 
     // 
 
-    var server = app.listen(5000, function () {
-        console.log("Le Serveur est en route 5000");
-    });
+   
 
 
 
@@ -147,5 +146,11 @@ app.put('/api/reponse/:id', function(req, res){
 // afficher reponse questionnaire
 
 app.get('/Avis', function (req, res) {
-    res.render('Avis');
+    Admin.find().then(data => {
+        res.render('Avis', {data: data});
+    }).catch(err => {console.log(err);});
+})
+
+var server = app.listen(5000, function () {
+    console.log("Le Serveur est en route 5000");
 });

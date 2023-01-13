@@ -8,12 +8,23 @@
 </head>
 <body>
     <h1>Admin</h1>
+    
     <form action='/api/admin' method="post">
-        <label for=""></label>
+        <label for="">Qui rédige la question</label>
+        <input type="text" name="user" disabled value="<%=data.user%>">
+        <br><br>
+
+
+        <label for="">Quel est le titre de la qustion</label>
         <input type="text" name="titre">
-        <label for=""></label>
+        <br><br>
+
+
+        <label for="">Entrez votre question</label>
         <textarea name="question"  cols="30" rows="10"></textarea>
+        <br><br>
          <input type="submit" value="sousmettre"/>  
     </form>
+    
 </body>
 </html>

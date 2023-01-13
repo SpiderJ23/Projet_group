@@ -8,9 +8,10 @@
 </head>
 <body>
     <% data.forEach( post =>{ %>
+   
+        <%= post.question%> <br>
+        <p>reponse : <%= post.note%> </p>
         
-        <%= post.question%>
-        <%= post.note%>
         <br><br>
         <% })   %>
 </body>
