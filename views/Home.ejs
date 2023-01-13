@@ -8,11 +8,39 @@
 </head>
 <body>
     <h1>Home</h1>
-    <%=data %>
-    <%# data.forEach( post =>{ %>
-        <%#= post.titre%>
-        <%#= post.question%>
+    <%#= data %>
+    <% data.forEach( post =>{ %>
+        <%= post %>
+        <form action="/api/reponse/<%= post.id %>?_method=PUT" method="post">
+            <input type="hidden" name="_method" value="PUT">
 
-        <%# })   %>
+            <label for=""><%= post.question%></label>
+            
+                <input type="radio" id="1" name="note" value="1">
+                <label for="1">1</label>
+              
+            
+                <input type="radio" id="2" name="note" value="2">
+                <label for="2">2</label>
+              
+            
+                <input type="radio" id="3" name="note" value="3">
+                <label for="3">3</label>
+              
+            
+                <input type="radio" id="4" name="note" value="4">
+                <label for="4">4</label>
+              
+            
+                <input type="radio" id="5" name="note" value="5">
+                <label for="5">5</label>
+                
+              
+                <input type="submit" value="envoyer">
+        </form>
+        <br><br>
+        <% })   %>
+
+       
 </body>
-</html>
+</html> 

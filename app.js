@@ -7,6 +7,10 @@ var mongoose = require('mongoose');
 var   bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended : false }));
 
+
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'))
+
 app.set('view engine', 'ejs'); 
 require ("dotenv").config()
 
@@ -32,25 +36,16 @@ mongoose.connect(dbURL, {
 
 
 // Routes
-app.get('/HomePage', function (req, res) {
-    res.render('Home');
-});
+// app.get('/homepage', function (req, res) {
+//     res.render('Home');
+// });
 app.get('/HomeAdmin', function (req, res) {
     res.render('Admin');
 });
 
-app.get('/Avis', function (req, res) {
-    res.render('Avis');
-});
 
-// Routes pour afficher les données récupérer
-app.get('/Admin/:id', function (req, res) {
-    Admin.findOne({
-        _id: req.params.id
-    }).then(data => {
-        res.render('Home', {data: data});
-    }).catch(err => {console.log(err);});
-})
+
+
 
 
 // app.get('/Avis', function (req, res) {
@@ -97,7 +92,7 @@ app.post("/api/signin", function(req, res){
         res.render('Admin');
      }
      else{  
-     res.render("Home",{data:user});
+        res.redirect("/home");
      }
        
      }).catch(err=>{console.log(err)})
@@ -109,7 +104,8 @@ app.post("/api/signin", function(req, res){
 
     // envoie questionnaire base de donnée
 
-    app.post ('/api/admin',function (req, res){
+    app.post('/api/admin',function (req, res){
+       console.log("admin");
        console.log(req.body);
         const question = new Admin ({
             titre: req.body.titre,
@@ -117,7 +113,7 @@ app.post("/api/signin", function(req, res){
             note: req.body.note
         })
     question.save().then(()=>
-    res.redirect('/Home')
+        res.render('Admin')
     ).catch(err=> console.log (err));  
 
     });
@@ -129,3 +125,31 @@ app.post("/api/signin", function(req, res){
     });
 
 
+
+
+// Routes pour afficher les données récupérer
+app.get('/home', function (req, res) {
+    Admin.find().then(data => {
+        res.render('Home', {data: data});
+    }).catch(err => {console.log(err);});
+})
+
+app.put('/api/reponse/:id', function(req, res){
+    Admin.findOne(
+        {
+            _id: req.params.id
+        }).then(data => {
+            data.note = req.body.note;
+            data.save().then(()=>{
+                console.log("Data changed !");
+                res.redirect('/home');
+            }).catch(err => console.log(err));
+
+        }).catch(err => { console.log(err) });
+});
+
+// afficher reponse questionnaire
+
+app.get('/Avis', function (req, res) {
+    res.render('Avis');
+});
