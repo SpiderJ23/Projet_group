@@ -4,6 +4,9 @@ var app = express();
 
 var mongoose = require('mongoose');
 
+// var Login = require('.models/login');
+var User = require('./models/User');
+
 var   bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended : false }));
 
@@ -30,11 +33,6 @@ mongoose.connect(dbURL, {
 .catch(err => console.log("Error : "+ err));
 
 
-
-
-
-
-
 // Routes
 // app.get('/homepage', function (req, res) {
 //     res.render('Home');
@@ -55,7 +53,6 @@ app.get('/HomeAdmin', function (req, res) {
 
 
 // inscription
-
 app.post("/api/signup", function(req, res){
     const Data = new User ({
         user: req.body.user,
@@ -76,7 +73,6 @@ app.get('/signup', function (req, res) {
 
 
 // connexion
-
 app.post("/api/signin", function(req, res){
     User.findOne({ 
      email : req.body.email
